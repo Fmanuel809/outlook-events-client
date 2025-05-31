@@ -1,5 +1,7 @@
 # Outlook Events Client
 
+[![Tests](badge.svg)](badge.svg)
+
 TypeScript library to manage Outlook calendar events using the Microsoft Graph API.
 
 ## Prerequisites
