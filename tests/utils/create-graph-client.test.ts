@@ -1,7 +1,18 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
-import { createGraphClient } from '../../src/utils';
 import { Client } from '@microsoft/microsoft-graph-client';
 import { ClientSecretCredential } from '@azure/identity';
+
+// Capture constructor arguments of TokenCredentialAuthenticationProvider
+const providerArgs: unknown[][] = [];
+vi.mock('@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials', () => ({
+  TokenCredentialAuthenticationProvider: vi.fn().mockImplementation((...args: unknown[]) => {
+    providerArgs.push(args);
+    return {};
+  })
+}));
+
+import { TokenCredentialAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials';
+import { createGraphClient } from '../../src/utils';
 
 type FakeToken = { token: string; expiresOnTimestamp: number };
 
@@ -28,6 +39,19 @@ describe('createGraphClient', () => {
       tenantId: mockTenantId
     });
     expect(client).toBeInstanceOf(Client);
+  });
+
+  it('should instantiate TokenCredentialAuthenticationProvider with default scopes', () => {
+    createGraphClient({
+      clientId: mockClientId,
+      clientSecret: mockClientSecret,
+      tenantId: mockTenantId
+    });
+
+    expect(TokenCredentialAuthenticationProvider).toHaveBeenCalledWith(
+      expect.any(ClientSecretCredential),
+      { scopes: ['https://graph.microsoft.com/.default'] }
+    );
   });
 
   it('should throw an error if credentials are missing', () => {
