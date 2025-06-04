@@ -16,12 +16,23 @@ import { Client } from '@microsoft/microsoft-graph-client';
  * });
  */
 export const createGraphClient = (credentials: IClientCredential): Client => {
-    const { clientId, clientSecret, tenantId } = credentials;
-    const credentialProvider = new ClientSecretCredential(tenantId || "", clientId, clientSecret);
+    if (!credentials || !credentials.clientId || !credentials.clientSecret) {
+        throw new Error("Invalid credentials provided");
+    }
 
-    const authProvider = new TokenCredentialAuthenticationProvider(credentialProvider, {
-        scopes: ["https://graph.microsoft.com/.default"]
-    });
+    const { clientId, clientSecret, tenantId } = credentials;
+    const credentialProvider = new ClientSecretCredential(
+        tenantId || "",
+        clientId,
+        clientSecret,
+    );
+
+    const authProvider = new TokenCredentialAuthenticationProvider(
+        credentialProvider,
+        {
+            scopes: ["https://graph.microsoft.com/.default"],
+        },
+    );
 
     return Client.initWithMiddleware({ authProvider });
-}
+};
