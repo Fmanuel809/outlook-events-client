@@ -78,7 +78,7 @@ Creates a client instance.
 
 Creates a calendar event for the specified user.
 
-- `event`: Object with event data (see example and types in `src/interfaces/outlook-event.ts`).
+- `event`: Object with event data (see example and types in `src/interfaces/event.ts`).
 - `userPrincipalName`: User's email or UPN.
 - **Errors:** Throws if parameters are invalid or the API fails.
 

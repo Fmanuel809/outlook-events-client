@@ -47,7 +47,7 @@ export interface IEvent {
      * The type of content in the body (HTML or plain text).
      * @example 'HTML'
      */
-    contentType: 'HTML' | 'Text';
+    contentType: 'text' | 'html';
     /**
      * The actual content of the event body.
      * @example '<p>Discuss project updates</p>'
