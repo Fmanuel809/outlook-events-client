@@ -19,9 +19,9 @@ export const createGraphClient = (credentials: IClientCredential): Client => {
     const { clientId, clientSecret, tenantId } = credentials;
     const credentialProvider = new ClientSecretCredential(tenantId || "", clientId, clientSecret);
 
-    const authPRovider = new TokenCredentialAuthenticationProvider(credentialProvider, {
+    const authProvider = new TokenCredentialAuthenticationProvider(credentialProvider, {
         scopes: ["https://graph.microsoft.com/.default"]
     });
 
-    return Client.initWithMiddleware({ authProvider: authPRovider });
+    return Client.initWithMiddleware({ authProvider });
 }
