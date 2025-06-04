@@ -48,9 +48,10 @@ describe('createGraphClient', () => {
       tenantId: mockTenantId
     });
 
-    expect(TokenCredentialAuthenticationProvider).toHaveBeenCalled();
-    const [, options] = providerArgs[0];
-    expect(options).toEqual({ scopes: ['https://graph.microsoft.com/.default'] });
+    expect(TokenCredentialAuthenticationProvider).toHaveBeenCalledWith(
+      expect.any(ClientSecretCredential),
+      { scopes: ['https://graph.microsoft.com/.default'] }
+    );
   });
 
   it('should throw an error if credentials are missing', () => {
